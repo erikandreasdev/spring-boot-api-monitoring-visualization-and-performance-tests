@@ -22,6 +22,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    compileOnly("org.projectlombok:lombok")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.springframework.boot:spring-boot-docker-compose")

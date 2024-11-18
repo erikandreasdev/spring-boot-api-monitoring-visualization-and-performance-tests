@@ -1,164 +1,222 @@
-Here's a detailed `README.md` for the provided `docker-compose.yml` file.
+# Spring Boot with PostgreSQL: REST API, OpenAPI Documentation, and Advanced Monitoring (Actuator, Prometheus, Grafana) with Performance Testing using Oha
 
 ---
 
-# Monitoring and Database Infrastructure
-
-This repository contains a `docker-compose.yml` configuration to set up a monitoring stack with **Prometheus**, **Grafana**, and **PostgreSQL**, along with **pgAdmin** for database management.
-
-## Table of Contents
-
+## **Table of Contents**
 1. [Overview](#overview)
-2. [Services](#services)
-3. [Getting Started](#getting-started)
-4. [Environment Variables](#environment-variables)
-5. [Volumes](#volumes)
-6. [Ports](#ports)
-7. [Usage](#usage)
+2. [Features and Components](#features-and-components)
+3. [Quick Access Links](#quick-access-links)
+4. [Requirements](#requirements)
+5. [Setup Guide](#setup-guide)
+6. [Directory Structure](#directory-structure)
+7. [Customization](#customization)
 8. [Troubleshooting](#troubleshooting)
+9. [Contributing](#contributing)
+10. [License](#license)
+
+---
 
 ## Overview
 
-This setup provides:
-- **Prometheus**: A powerful monitoring and alerting toolkit.
-- **Grafana**: A data visualization platform that integrates with Prometheus.
-- **PostgreSQL**: A robust relational database system.
-- **pgAdmin**: A management tool for PostgreSQL databases.
+This project demonstrates a comprehensive implementation of a **Spring Boot** application integrated with **PostgreSQL**, featuring a robust **REST API** fully documented using **OpenAPI Specification** and **SwaggerUI**. It also includes advanced **monitoring** and **visualization** capabilities powered by **Spring Boot Actuator**, **Prometheus**, and **Grafana**. Additionally, **Oha**, a high-performance HTTP load testing tool, is integrated for stress testing and benchmarking REST API performance.
 
-The infrastructure is containerized using Docker Compose, ensuring easy deployment and maintenance.
+### Key Highlights:
 
----
+1. **Spring Boot REST API**:
+    - Build scalable and maintainable RESTful endpoints.
+    - Document APIs effortlessly with **OpenAPI** and interactive **SwaggerUI**.
 
-## Services
+2. **Database Integration**:
+    - Utilize **PostgreSQL**, a powerful relational database, for reliable and efficient data storage.
 
-### 1. Prometheus
-- **Image**: `prom/prometheus`
-- **Purpose**: Monitoring and alerting.
-- **Config Location**: `./prometheus`
-- **Ports**: `9090:9090`
+3. **Monitoring & Metrics**:
+    - Leverage **Spring Boot Actuator** for health checks, metrics, and application insights.
+    - Use **Prometheus** for gathering and querying real-time metrics.
+    - Visualize data with elegant, customizable dashboards using **Grafana**.
 
-### 2. Grafana
-- **Image**: `grafana/grafana`
-- **Purpose**: Visualizing metrics from Prometheus.
-- **Config Location**: `./grafana`
-- **Environment Variables**:
-    - `GF_SECURITY_ADMIN_USER`: Grafana admin username.
-    - `GF_SECURITY_ADMIN_PASSWORD`: Grafana admin password.
-- **Ports**: `3000:3000`
+4. **Performance Testing with Oha**:
+    - Conduct **HTTP load testing** to evaluate REST API performance.
+    - Generate meaningful benchmarks to identify bottlenecks and improve scalability.
+    - Effortless CLI-based testing with customizable parameters for concurrent requests and duration.
 
-### 3. PostgreSQL
-- **Image**: `postgres:latest`
-- **Purpose**: Relational database.
-- **Environment Variables**:
-    - `POSTGRES_USER`: PostgreSQL username.
-    - `POSTGRES_PASSWORD`: PostgreSQL password.
-    - `POSTGRES_DB`: Name of the default database.
-- **Ports**: `5432:5432`
+5. **Containerized Deployment**:
+    - Seamless setup using **Docker** and **Docker Compose** to ensure portability and consistency across environments.
 
-### 4. pgAdmin
-- **Image**: `dpage/pgadmin4:latest`
-- **Purpose**: Database administration for PostgreSQL.
-- **Environment Variables**:
-    - `PGADMIN_DEFAULT_EMAIL`: Email for pgAdmin login.
-    - `PGADMIN_DEFAULT_PASSWORD`: Password for pgAdmin login.
-- **Ports**: `5050:80`
+This project serves as an all-in-one solution, combining best practices in API development, database integration, monitoring, and performance testing in a production-ready setup.
 
 ---
 
-## Getting Started
+## **Features and Components**
 
-### Prerequisites
-- Docker and Docker Compose installed on your system.
-- Ensure environment variables are defined in a `.env` file or passed directly.
+### **Monitoring and Visualization: Prometheus & Grafana**
+- **Prometheus** collects and aggregates metrics from services and applications, supports PromQL for querying, and enables alerting configurations.
+- **Grafana** provides customizable dashboards for visualizing Prometheus metrics and data from other sources.
+- **Ports**:
+    - Prometheus: `9090`
+    - Grafana: `3000`
+- **Persistence**:
+    - Prometheus uses the `prom_data` volume for storing metrics.
+    - Grafana settings and dashboards are preserved in a mounted volume.
+- **Default Credentials** for Grafana:
+    - Username: `admin`
+    - Password: `admin`
 
-### Steps
-1. Clone this repository:
+### **Database Management: PostgreSQL & PgAdmin**
+- **PostgreSQL** is a relational database for managing structured data with ACID compliance, supporting complex queries and high availability.
+- **PgAdmin** is a web-based GUI for managing PostgreSQL databases, simplifying table creation, query execution, and schema design.
+- **Ports**:
+    - PostgreSQL: `5432`
+    - PgAdmin: `5050`
+- **Persistence**:
+    - PostgreSQL stores data in the `db-data` volume.
+    - PgAdmin’s configuration persists in its container volume.
+- **Environment Variables**:
+    - Configure PostgreSQL and PgAdmin credentials in the `.env` file:
+        - `POSTGRES_USER`, `POSTGRES_PW`, `POSTGRES_DB`
+        - `PGADMIN_MAIL`, `PGADMIN_PW`
+
+### **Performance Testing: Oha**
+- **Oha** is a lightweight and high-performance HTTP load testing tool for benchmarking REST APIs.
+- **Key Features**:
+    - Conduct concurrent HTTP request simulations to test API scalability.
+    - Measure key performance indicators such as latency, throughput, and error rates.
+    - Customize testing parameters (e.g., request duration, concurrency levels) directly from the command line.
+- **Integration**:
+    - Simple CLI installation, compatible with the project’s REST endpoints.
+    - Use alongside **Prometheus** and **Grafana** to correlate load testing results with real-time application metrics.
+- **Usage Example**:
+    ```bash
+    oha --duration 30s --concurrency 100 http://localhost:8080/api/endpoint
+    ```
+  This command sends 100 concurrent requests to the specified API endpoint for 30 seconds.
+
+---
+
+
+## **Quick Access Links**
+
+### **Documentation**
+- **Prometheus**:
+    - [PromQL Basics](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+    - [Prometheus Configuration Guide](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
+    - [Spring Boot Monitoring with Prometheus and Grafana](https://bell-sw.com/blog/spring-boot-monitoring-in-kubernetes-with-prometheus-and-grafana/)
+- **Grafana**:
+    - [Grafana Documentation](https://grafana.com/docs/grafana/latest/) (Verified working link)
+- **PostgreSQL**:
+    - [PostgreSQL Official Docs](https://www.postgresql.org/docs/)
+- **PgAdmin**:
+    - [PgAdmin Official Docs](https://www.pgadmin.org/docs/)
+- **Spring Boot**:
+    - [Spring Boot Actuator Documentation](https://docs.spring.io/spring-boot/reference/actuator/index.html)
+    - [Spring Boot External Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
+    - [OpenAPI Documentation with Swagger](https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/)
+
+---
+
+## **Requirements**
+
+- **Docker**: Version 20.10+
+- **Docker Compose**: Version 1.29+
+- **Environment Variables**:
+    - Ensure the `.env` file is populated with the following:
+      ```dotenv
+      POSTGRES_USER=your_username
+      POSTGRES_PW=your_password
+      POSTGRES_DB=your_database
+      PGADMIN_MAIL=admin@example.com
+      PGADMIN_PW=admin_password
+      ```
+
+---
+
+## **Setup Guide**
+
+1. **Clone the Repository**
    ```bash
    git clone <repository-url>
-   cd <repository-folder>
+   cd <repository-directory>
    ```
-2. Define environment variables in a `.env` file:
-   ```env
-   POSTGRES_USER=your-username
-   POSTGRES_PW=your-password
-   PGADMIN_MAIL=your-email
-   PGADMIN_PW=your-pgadmin-password
-   ```
-3. Start the services:
+
+2. **Configure Environment Variables**
+    - Populate the `.env` file as shown in the [Requirements](#requirements).
+
+3. **Start the Services**
    ```bash
    docker-compose up -d
    ```
 
-4. Access the services:
+4. **Verify Setup**
     - **Prometheus**: [http://localhost:9090](http://localhost:9090)
     - **Grafana**: [http://localhost:3000](http://localhost:3000)
-    - **pgAdmin**: [http://localhost:5050](http://localhost:5050)
+    - **PgAdmin**: [http://localhost:5050](http://localhost:5050)
 
 ---
 
-## Environment Variables
+## **Directory Structure**
 
-| Variable           | Description                     | Default/Required |
-|---------------------|---------------------------------|------------------|
-| `POSTGRES_USER`     | PostgreSQL username            | Required         |
-| `POSTGRES_PW`       | PostgreSQL password            | Required         |
-| `PGADMIN_MAIL`      | pgAdmin email                  | Required         |
-| `PGADMIN_PW`        | pgAdmin password               | Required         |
-| `GF_SECURITY_ADMIN_USER` | Grafana admin username        | Default: `admin` |
-| `GF_SECURITY_ADMIN_PASSWORD` | Grafana admin password        | Default: `admin` |
-
----
-
-## Volumes
-
-| Volume Name | Mounted Path                          | Description              |
-|-------------|---------------------------------------|--------------------------|
-| `prom_data` | `/prometheus`                        | Prometheus data storage  |
-| `db-data`   | `/var/lib/postgresql/data`           | PostgreSQL data storage  |
+```plaintext
+project/
+├── docker-compose.yml           # Docker Compose configurations
+├── prometheus/                  # Prometheus configuration directory
+│   └── prometheus.yml           # Main Prometheus configuration file
+├── grafana/                     # Grafana provisioning directory
+├── db-data/                     # PostgreSQL data volume
+├── src/main/resources/          # Spring Boot resources
+│   └── application.properties   # Application-specific properties
+├── .env                         # Environment variables file
+└── README.md                    # Project documentation
+```
 
 ---
 
-## Ports
+## **Customization**
 
-| Service    | Host Port | Container Port |
-|------------|-----------|----------------|
-| Prometheus | 9090      | 9090           |
-| Grafana    | 3000      | 3000           |
-| PostgreSQL | 5432      | 5432           |
-| pgAdmin    | 5050      | 80             |
+1. **Prometheus Configuration**:
+    - Edit `./prometheus/prometheus.yml` to add scrape targets and alerts.
 
----
+2. **Grafana Dashboards**:
+    - Customize dashboards and data sources in the `grafana` provisioning directory.
 
-## Usage
+3. **PostgreSQL Initialization**:
+    - Place `.sql` files in `/docker-entrypoint-initdb.d/` to initialize database schemas.
 
-- **Customizing Prometheus**: Update the configuration in `./prometheus/prometheus.yml`.
-- **Adding Grafana Dashboards**: Place JSON dashboard files in `./grafana`.
-- **Accessing PostgreSQL**:
-  ```bash
-  psql -h localhost -U <POSTGRES_USER> -d <POSTGRES_DB>
-  ```
+4. **Spring Boot Application Properties**:
+    - Configure `application.properties` for:
+        - Database connections.
+        - Logging levels.
+        - Custom application behavior.
 
 ---
 
-## Troubleshooting
+## **Troubleshooting**
 
-- **Containers not starting**: Check `.env` variables and ensure required ones are defined.
-- **Permission issues**: Run `chmod -R 755 ./prometheus ./grafana`.
-- **Logs**: View container logs:
-  ```bash
-  docker-compose logs <service-name>
-  ```
+### Common Issues:
+1. **Containers Fail to Start**:
+    - Ensure `.env` is configured correctly.
+    - Check for port conflicts using `docker ps` or other system utilities.
+
+2. **Logs**:
+    - View logs for any service:
+      ```bash
+      docker-compose logs <service-name>
+      ```
+
+3. **Restart Services**:
+    - Restart specific services:
+      ```bash
+      docker-compose restart <service-name>
+      ```
 
 ---
 
-## Contributing
+## **Contributing**
 
-Feel free to submit issues or pull requests for improvements.
-
-## License
-
-This project is licensed under the MIT License.
+We welcome contributions! Open an issue or submit a pull request for bug fixes, feature enhancements, or documentation improvements.
 
 ---
 
-Let me know if you'd like adjustments! 🚀
+## **License**
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
+
+---
