@@ -110,7 +110,8 @@ This project serves as an all-in-one solution, combining best practices in API d
     - [Spring Boot Actuator Documentation](https://docs.spring.io/spring-boot/reference/actuator/index.html)
     - [Spring Boot External Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
     - [OpenAPI Documentation with Swagger](https://bell-sw.com/blog/documenting-rest-api-with-swagger-in-spring-boot-3/)
-
+- **Oha**:
+    - [Oha](https://github.com/hatoo/oha)
 ---
 
 ## **Requirements**
@@ -149,7 +150,7 @@ This project serves as an all-in-one solution, combining best practices in API d
     - **Prometheus**: [http://localhost:9090](http://localhost:9090)
     - **Grafana**: [http://localhost:3000](http://localhost:3000)
     - **PgAdmin**: [http://localhost:5050](http://localhost:5050)
-
+    - **Swagger**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 ---
 
 ## **Directory Structure**
@@ -166,25 +167,6 @@ project/
 ├── .env                         # Environment variables file
 └── README.md                    # Project documentation
 ```
-
----
-
-## **Customization**
-
-1. **Prometheus Configuration**:
-    - Edit `./prometheus/prometheus.yml` to add scrape targets and alerts.
-
-2. **Grafana Dashboards**:
-    - Customize dashboards and data sources in the `grafana` provisioning directory.
-
-3. **PostgreSQL Initialization**:
-    - Place `.sql` files in `/docker-entrypoint-initdb.d/` to initialize database schemas.
-
-4. **Spring Boot Application Properties**:
-    - Configure `application.properties` for:
-        - Database connections.
-        - Logging levels.
-        - Custom application behavior.
 
 ---
 
