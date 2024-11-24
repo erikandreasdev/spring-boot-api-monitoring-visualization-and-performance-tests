@@ -19,13 +19,10 @@ public class Product {
 
     private double price;
 
-    @Column(name = "isOfferApplied")
     private boolean isOfferApplied = false;
 
-    @Column(name = "discountPercentage")
     private double discountPercentage = 0.0;
 
-    @Column(name = "priceAfterDiscount")
     private double priceAfterDiscount = 0.0;
 
     public Product(String name, String category, double price) {
